@@ -1,23 +1,55 @@
-import React from 'react';
-import Icon from './ui/Icon';
+import React, { useState, useRef, useEffect } from 'react';
+import { EyeIcon } from '@heroicons/react/24/solid';
+import DownloadResumeUnified from './DownloadResumeUnified';
+import PopupModal from './PopupModal';
+import { useResume } from '../context/ResumeContext';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+gsap.registerPlugin(ScrollTrigger);
 
-const Header = () => (
-  <div className="flex justify-between items-center mb-8">
-    <div>
-      <h1 className="text-3xl font-bold text-gray-800">Resume Builder</h1>
-      <p className="text-gray-500">Create ATS-friendly resumes with AI suggestions</p>
-    </div>
-    <div className="flex gap-4">
-      <button className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors">
-        <Icon path="M2.036 12.322a1.012 1.012 0 010-.639l4.43-7.087a1.012 1.012 0 011.586-.215l2.25 1.406a1.012 1.012 0 01.215 1.586l-4.43 7.087a1.012 1.012 0 01-1.586.215l-2.25-1.406a1.012 1.012 0 01-.215-1.586z M19.964 12.322a1.012 1.012 0 000-.639l-4.43-7.087a1.012 1.012 0 00-1.586-.215l-2.25 1.406a1.012 1.012 0 00-.215 1.586l4.43 7.087a1.012 1.012 0 001.586.215l2.25-1.406a1.012 1.012 0 00.215-1.586z" />
-        Preview
-      </button>
-      <button className="flex items-center gap-2 px-4 py-2 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600 transition-colors">
-        <Icon path="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
-        Download
-      </button>
-    </div>
-  </div>
-);
+const Header = () => {
+  const [showPreview, setShowPreview] = useState(false);
+  const rootRef = useRef(null);
+  const resumeData = useResume();
+
+  useEffect(() => {
+    if (rootRef.current) {
+      gsap.fromTo(
+        rootRef.current,
+        { opacity: 0, y: 40 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: rootRef.current,
+            start: 'top 90%',
+            toggleActions: 'play none none none',
+          },
+        }
+      );
+    }
+  }, []);
+
+  return (
+    <>
+      <div ref={rootRef} className="flex flex-col sm:flex-row justify-between items-left mb-8">
+        <div className="text-left sm:text-left mb-4 sm:mb-0">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">Resume Builder</h1>
+          <p className="text-sm sm:text-base text-gray-500">Create ATS-friendly resumes with AI suggestions</p>
+        </div>
+        <div className="flex gap-4">
+          <button onClick={() => setShowPreview(true)} className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-colors cursor-pointer">
+            <EyeIcon className="h-5 w-5" />
+            Preview
+          </button>
+          <DownloadResumeUnified />
+        </div>
+      </div>
+      <PopupModal isVisible={showPreview} onClose={() => setShowPreview(false)} resumeData={resumeData} />
+    </>
+  );
+};
 
 export default Header;

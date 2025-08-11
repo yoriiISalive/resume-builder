@@ -1,5 +1,9 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import Icon from './ui/Icon';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const QuickActions = () => {
     const actions = [
@@ -8,12 +12,34 @@ const QuickActions = () => {
         { name: 'Duplicate Resume', icon: 'M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.375a48.667 48.667 0 00-7.5 0C8.188 17.625 7.5 16.338 7.5 15c0-1.338.688-2.625 1.875-3.375a48.667 48.667 0 017.5 0c1.188.75 1.875 2.037 1.875 3.375 0 1.338-.688 2.625-1.875 3.375z', color: 'bg-purple-100' },
         { name: 'AI Optimizer', icon: 'M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.311a14.994 14.994 0 01-7.5 0C5.093 19.386 3.75 17.25 3.75 15c0-3.75 3.75-7.5 7.5-7.5s7.5 3.75 7.5 7.5c0 2.25-1.343 4.386-3.25 5.789z', color: 'bg-orange-100' },
     ];
+    const rootRef = useRef(null);
+
+    useEffect(() => {
+        if (rootRef.current) {
+            gsap.fromTo(
+                rootRef.current,
+                { opacity: 0, y: 60 },
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 1.1,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: rootRef.current,
+                        start: 'top 80%',
+                        toggleActions: 'play none none none',
+                    },
+                }
+            );
+        }
+    }, []);
+
     return (
-        <div className="bg-white p-6 rounded-xl shadow-md">
+        <div ref={rootRef} className="bg-white p-6 rounded-xl shadow-md">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">Quick Actions</h2>
             <div className="space-y-3">
                 {actions.map(action => (
-                    <button key={action.name} className={`w-full flex items-center gap-3 p-3 rounded-lg text-left ${action.color} hover:opacity-80 transition-opacity`}>
+                    <button key={action.name} className={`w-full flex items-center gap-3 p-3 rounded-lg text-left cursor-pointer ${action.color} hover:opacity-80 transition-opacity`}>
                         <Icon path={action.icon} className="w-5 h-5 text-gray-700" />
                         <span className="font-semibold text-gray-700">{action.name}</span>
                     </button>
