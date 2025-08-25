@@ -42,7 +42,7 @@ const AiSuggestions = () => {
                         <div className="flex-grow">
                             <div className="flex justify-between items-start">
                                 <h3 className="font-semibold text-gray-800">{sug.title}</h3>
-                                <button className="text-sm text-blue-600 font-semibold cursor-pointer">Apply</button>
+                                <button className="text-sm text-blue-600 font-semibold cursor-pointer ml-4">Apply</button>
                             </div>
                             <p className="text-sm text-gray-600 mt-1">{sug.desc}</p>
                         </div>
