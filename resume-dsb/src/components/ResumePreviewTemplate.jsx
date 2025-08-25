@@ -16,6 +16,17 @@ const ResumePreviewTemplate = ({ resumeData, selectedTemplate }) => {
     projects = [] 
   } = resumeData;
 
+  const renderTemplate = () => {
+    switch (selectedTemplate) {
+      case 'Classic':
+        return renderClassicTemplate();
+      case 'Creative':
+        return renderCreativeTemplate();
+      default:
+        return renderModernTemplate();
+    }
+  };
+
   const renderModernTemplate = () => (
     <div className="border border-gray-200 rounded-lg p-2 sm:p-4 text-xs sm:text-sm text-gray-700">
       <div className="text-center mb-4">

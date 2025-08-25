@@ -10,7 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Header = () => {
   const [showPreview, setShowPreview] = useState(false);
   const rootRef = useRef(null);
-  const resumeData = useResume();
+  const { resumeData, selectedTemplate } = useResume();
 
   useEffect(() => {
     if (rootRef.current) {
@@ -47,7 +47,12 @@ const Header = () => {
           <DownloadResumeUnified />
         </div>
       </div>
-      <PopupModal isVisible={showPreview} onClose={() => setShowPreview(false)} resumeData={resumeData} />
+      <PopupModal 
+        isVisible={showPreview} 
+        onClose={() => setShowPreview(false)} 
+        resumeData={resumeData} 
+        selectedTemplate={selectedTemplate} 
+      />
     </>
   );
 };

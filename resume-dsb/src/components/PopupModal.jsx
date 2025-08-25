@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import ResumePreviewTemplate from './ResumePreviewTemplate';
 
-const PopupModal = ({ onClose, isVisible, resumeData }) => {
+const PopupModal = ({ onClose, isVisible, resumeData, selectedTemplate }) => {
   useEffect(() => {
     if (isVisible) {
       document.body.style.overflow = 'hidden';
@@ -41,7 +41,7 @@ const PopupModal = ({ onClose, isVisible, resumeData }) => {
           </div>
         </div>
         <div id="resume-preview-content" className="flex-grow overflow-y-auto">
-          <ResumePreviewTemplate resumeData={resumeData} />
+          <ResumePreviewTemplate resumeData={resumeData} selectedTemplate={selectedTemplate} />
         </div>
       </div>
     </div>
